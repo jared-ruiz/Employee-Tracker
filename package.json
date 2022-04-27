@@ -1,0 +1,24 @@
+{
+  "name": "challenge-12",
+  "version": "1.0.0",
+  "description": "- For the twelfth challenge of my bootcamp, I am tasked with creating a CMS application that populates and edits the employee database in the command line. It will allow the user to view employees, edit and select through current data. I will be using inquirer, node, mysql2, and console.table.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jared-ruiz/Employee-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jared-ruiz/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/jared-ruiz/Employee-Tracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.2",
+    "mysql2": "^2.3.3"
+  }
+}
