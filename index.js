@@ -58,6 +58,7 @@ const beginPrompt = () => {
     });
 }
 
+//ask if the user would like to return to start of data selection
 const returnToPrompt = () => {
     return inquirer.prompt([
         {
@@ -142,6 +143,86 @@ addDepartment = () => {
             returnToPrompt();
         });
         
+    })
+}
+
+addRole = () => {
+    
+    //make query here to show current roles and departments
+    //this will allow them to pick an existing department's id correctly
+
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'roleName',
+            message: 'Please provide a title for this new role.'
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Please input the salary associated with this new role.'
+        },
+        {
+            type: 'input',
+            name: 'departmentId',
+            message: 'Please provide the department ID.'
+        }
+    ])
+    .then(roleInfo => {
+        const sql = `INSERT INTO role (title, salary, department_id)
+        VALUES (?, ?, ?)`
+        const params = ([roleInfo.roleName, roleInfo.salary, roleInfo.departmentId]);
+
+        db.query(sql, params, (err, res) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`Successfully added ${roleInfo.name} to the database.`);
+
+            //ask if they would like to return to database selection
+            returnToPrompt();
+        })
+    })
+}
+
+addEmployee = () => {
+
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'firstName',
+            message: "Please provide the employee's First Name."
+        },
+        {
+            type: 'input',
+            name: 'lastName',
+            message: "Please provide the employee's Last Name."
+        },
+        {
+            type: 'input',
+            name: 'roleId',
+            message: "Please provide the emplmoyee's Role ID."
+        },
+        {
+            type: 'input',
+            name: 'managerId',
+            message: "If this employee has a manager, please provide the manager's employee ID. (if none, leave blank)."
+        }
+    ])
+    .then(employeeInfo => {
+        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+        VALUES (?, ?, ?, ?)`;
+        const params = [employeeInfo.firstName, employeeInfo.lastName, employeeInfo.roleId, employeeInfo.managerId];
+
+        db.query(sql, params, (err, res) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log(`Successfully added ${employeeInfo.firstName, employeeInfo.lastName} to the database.`);
+            
+            //ask if they would like to return to database selection
+            returnToPrompt();
+        })
     })
 }
 
