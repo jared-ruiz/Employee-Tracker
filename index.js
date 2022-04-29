@@ -12,7 +12,7 @@ const beginPrompt = () => {
             type: 'list',
             name: 'startSelection',
             message: 'Please select an option.',
-            choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update an Employee', 'Exit']
+            choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update Employee Role', 'Exit']
         }
     ])
     //take inquirer data and parse for selection
@@ -48,11 +48,12 @@ const beginPrompt = () => {
             addEmployee();
         }
         //update an existing employee
-        else if (selectionData.startSelection === 'Update an Employee') {
-            console.log('Update an Employee Was Selected');
-            updateEmployee();
+        else if (selectionData.startSelection === 'Update Employee Role') {
+            console.log('Update Employee Role Was Selected');
+            updateEmployeeRole();
         }
         else {
+            console.log('Press "CTRL + C" to exit.');
             return;
         }
     });
@@ -75,7 +76,7 @@ const returnToPrompt = () => {
             console.log('-----------------------------------');
             beginPrompt();
         }
-        console.log('Have a great day!');
+        console.log('Press "CTRL + C" to exit.');
         return;
     })
 }
@@ -204,21 +205,75 @@ addEmployee = () => {
             message: "Please provide the emplmoyee's Role ID."
         },
         {
+            type: 'list',
+            name: 'managerConfirm',
+            message: 'Does this employee have a manager they report to?',
+            choices: ['Yes', 'No'],
+            default: 'No'
+        },
+        {
             type: 'input',
             name: 'managerId',
-            message: "If this employee has a manager, please provide the manager's employee ID. (if none, leave blank)."
+            message: "Please provide the manager's ID.",
+            when: (response) => response.managerConfirm === 'Yes'
         }
     ])
     .then(employeeInfo => {
-        const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
-        VALUES (?, ?, ?, ?)`;
-        const params = [employeeInfo.firstName, employeeInfo.lastName, employeeInfo.roleId, employeeInfo.managerId];
+        if (employeeInfo.managerConfirm === 'Yes') {
+            const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
+            VALUES (?, ?, ?, ?)`;
+            const params = [employeeInfo.firstName, employeeInfo.lastName, employeeInfo.roleId, employeeInfo.managerId];
+        
+            db.query(sql, params, (err, res) => {
+                if (err) {
+                    console.log(err);
+                }
+                console.log(`Successfully added ${employeeInfo.firstName, employeeInfo.lastName} to the database.`);
+                
+                //ask if they would like to return to database selection
+                returnToPrompt();
+            });
+        }
+        
+        const sql = `INSERT INTO employee (first_name, last_name, role_id)
+        VALUES (?, ?, ?)`;
+        const params = [employeeInfo.firstName, employeeInfo.lastName, employeeInfo.roleId];
 
         db.query(sql, params, (err, res) => {
             if (err) {
                 console.log(err);
             }
             console.log(`Successfully added ${employeeInfo.firstName, employeeInfo.lastName} to the database.`);
+            
+            //ask if they would like to return to database selection
+            returnToPrompt();
+        });
+    })
+}
+
+updateEmployeeRole = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employeeId',
+            message: "Pleaes provide the ID of the employee you wish to update."
+        },
+        {
+            type: 'input',
+            name: 'roleChangeId',
+            message: 'Please provide the updated Role ID you wish to change to.'
+        }
+    ])
+    .then(employeeSelection => {
+        const sql = `UPDATE employee SET role_id = ?
+        WHERE id = ?`;
+        const params = [employeeSelection.roleChangeId, employeeSelection.employeeId];
+
+        db.query(sql, params, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log('Successfully Updated Role ID.');
             
             //ask if they would like to return to database selection
             returnToPrompt();
