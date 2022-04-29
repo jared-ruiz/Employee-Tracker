@@ -82,7 +82,10 @@ const returnToPrompt = () => {
 }
 
 getAllEmployees = (selectionData) => {
-    const sql = `SELECT * FROM employee`;
+    const sql = `SELECT employee.id, employee.first_name, employee.last_name,  role.title AS job_title, department.name as department_name, role.salary AS salary, employee.manager_id
+    FROM employee
+    LEFT JOIN role ON employee.role_id = role.id
+    LEFT JOIN department ON role.department_id = department.id`;
     db.query(sql, (err, result) => {
         if (err) {
             throw err;
@@ -95,7 +98,9 @@ getAllEmployees = (selectionData) => {
 }
 
 getAllRoles = (selectionData) => {
-    const sql = `SELECT * FROM role`;
+    const sql = `SELECT role.id, role.title AS role_title, department.name AS department_name, role.salary AS salary
+    FROM role
+    LEFT JOIN department ON role.department_id = department.id`;
     db.query(sql, (err, result) => {
         if (err) {
             throw err;
