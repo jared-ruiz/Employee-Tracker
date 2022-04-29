@@ -183,7 +183,7 @@ addRole = () => {
             if (err) {
                 console.log(err);
             }
-            console.log(`Successfully added ${roleInfo.name} to the database.`);
+            console.log(`Successfully added ${roleInfo.roleName} to the database.`);
 
             //ask if they would like to return to database selection
             returnToPrompt();

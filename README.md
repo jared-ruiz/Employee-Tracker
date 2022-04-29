@@ -43,13 +43,19 @@ GIVEN a command-line application that accepts user input
 - [Usage](#usage)
 - [License Information](#license-information)
 - [Questions](#questions)
+- [Working Example of Project](#working-example-of-project)
 
 ## Installation
 ---
+- Download repository, sign into mysql in your terminal, run "db/db.sql" to first initialize the database "employee_database." Then run "source db/schema.sql" to create the tables associated with the database. You can run "source db/seeds.sql" to populate the table with example data if you would like. 
 
+- Next go to the connections.js file, and input your username and password to allow mysql2 to connect with the project.
+
+- Now you can run "node index" in terminal to begin the question prompts and work with the database.
 
 ## Usage
 ---
+- This application will allow the user to view all tables and their contents, add new data to each table, and edit an existing employee's role upon request. 
 
 
 ## License Information
@@ -61,6 +67,14 @@ GIVEN a command-line application that accepts user input
 ---
 - If you have any further questions, contact me here: [GitHub](https://github.com/jared-ruiz)
 
+## Working Example of Project
+---
+
+![Gif](./src/employee-tracker%20example.gif)
 
 ## Weekly Reflection
 ---
+
+This assignment was pretty fun to do actually. There was a lot of stuff I had to go back and reference from past modules but using inquirer for CLI prompts is interesting to me. I had to learn a lot about Mysql as well since it was intirely new to me but I think I have a good understanding of the basics to get things rolling. The modules are getting very lengthy and filled with content so I'm trying my best to knock them out as fast as I can so I can spend more time on the assignment. Every week I am getting closer to my goal so even if I feel overwhelmed, I have to keep going. I'll look back at this and be glad that I kept strong. Here's to another week!
+
+-J
